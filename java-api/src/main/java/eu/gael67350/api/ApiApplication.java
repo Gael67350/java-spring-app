@@ -2,8 +2,11 @@ package eu.gael67350.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
+import eu.gael67350.api.controllers.UserController;
+
+@SpringBootApplication(scanBasePackages={"eu.gael67350.api"})
 public class ApiApplication {
 
 	public static void main(String[] args) {

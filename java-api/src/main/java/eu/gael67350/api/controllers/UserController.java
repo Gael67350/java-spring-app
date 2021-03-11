@@ -20,7 +20,7 @@ import eu.gael67350.api.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(path="/users")
+@RequestMapping(path="/api/users")
 public class UserController {
 	
 	@Autowired

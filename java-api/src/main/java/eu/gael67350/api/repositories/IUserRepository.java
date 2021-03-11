@@ -12,4 +12,6 @@ public interface IUserRepository extends CrudRepository<User, Integer> {
 
 	Optional<User> findByMail(String mail);
 	
+	Optional<User> findByToken(String token);
+	
 }
