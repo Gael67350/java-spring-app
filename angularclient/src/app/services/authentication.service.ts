@@ -22,6 +22,10 @@ export class AuthenticationService {
     return this.userSubject.value;
   }
 
+  public get currentUserObservable(): BehaviorSubject<User> | null {
+    return this.userSubject;
+  }
+
   login(mail: string, password: string) {
         let formData = new FormData();
         formData.append('mail', mail);
@@ -37,8 +41,8 @@ export class AuthenticationService {
     }
 
     logout() {
-        localStorage.removeItem('user');
-        this.userSubject.next(null);
-        this.router.navigate(['/login']);
+      localStorage.removeItem('user');
+      this.userSubject.next(null);
+      this.router.navigate(['/login']);
     }
 }

@@ -1,18 +1,28 @@
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Mail</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users">
-            <th scope="row">{{ user.id }}</th>
-            <th scope="row">{{ user.firstName }}</th>
-            <th scope="row">{{ user.lastName }}</th>
-            <th scope="row"><a href="mailto:{{ user.mail }}">{{ user.mail }}</a></th>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-title">Liste des utilisateurs</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <th scope="row">{{ user.id }}</th>
+                    <th scope="row">{{ user.firstName }}</th>
+                    <th scope="row">{{ user.lastName }}</th>
+                    <th scope="row"><a href="mailto:{{ user.mail }}">{{ user.mail }}</a></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

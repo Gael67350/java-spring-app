@@ -1,3 +1,13 @@
-.app-title {
-    margin: 18px 0;
+.app-navbar {
+    margin-bottom: 18px;
+}
+
+.logout-btn {
+    font-size: 1rem;
+    line-height: 1rem;
+
+    .logout-icon {
+        font-size: inherit;
+        vertical-align: middle;
+    }
 }
