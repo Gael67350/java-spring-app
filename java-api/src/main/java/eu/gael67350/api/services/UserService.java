@@ -5,9 +5,14 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import eu.gael67350.api.interfaces.Authenticable;
 import eu.gael67350.api.models.User;
@@ -35,7 +40,22 @@ public class UserService implements Authenticable {
 	}
 	
 	public void destroy(int id) {
-		userRepository.deleteById(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userRepository.findByMail(auth.getName());
+		
+		if(!user.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Utilisateur inconnu.");
+		}
+		
+		if(user.get().getId() == id) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Vous ne pouvez pas supprimer votre propre compte utilisateur.");
+		}
+		
+		try {
+			userRepository.deleteById(id);
+		}catch(EmptyResultDataAccessException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Utilisateur inconnu.");
+		}
 	}
 	
 	public User store(User user) {

@@ -23,4 +23,8 @@ export class UserService {
   public search(query: string) {
     return this.http.get<User[]>(this.usersUrl + `?q=${query}`);
   }
+
+  public delete(id: number) {
+    return this.http.delete<any>(this.usersUrl + `/${id}`);
+  }
 }

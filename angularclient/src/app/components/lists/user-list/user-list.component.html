@@ -1,5 +1,13 @@
 <div class="row">
     <div class="col-md-12">
+        <div *ngIf="alertMessage" [ngClass]="alertClass" class="alert" role="alert">
+            {{ alertMessage }}
+          </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
         <h2 class="page-title">Liste des utilisateurs</h2>
     </div>
 </div>
@@ -36,12 +44,12 @@
                     <th scope="row">{{ user.lastName }}</th>
                     <th scope="row"><a href="mailto:{{ user.mail }}">{{ user.mail }}</a></th>
                     <th scope="row">
-                        <a href="#" class="list-actions btn btn-outline-primary">
+                        <button type="button" class="list-actions btn btn-outline-primary">
                             <i-bs name="pencil-fill"></i-bs>
-                        </a>
-                        <a href="#" class="list-actions btn btn-outline-danger">
+                        </button>
+                        <button (click)="onDeleteItem(user)" [disabled]="user.id === me.id" type="button" [ngClass]="{'btn-outline-danger': user.id !== me.id, 'btn-outline-secondary': user.id === me.id}" class="list-actions btn">
                             <i-bs name="trash-fill"></i-bs>
-                        </a>
+                        </button>
                     </th>
                 </tr>
             </tbody>
