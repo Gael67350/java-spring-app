@@ -1,6 +1,6 @@
 package eu.gael67350.api.controllers;
 
-import java.util.HashMap;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.gael67350.api.models.User;
 import eu.gael67350.api.services.UserService;
 
 @RestController
@@ -24,16 +25,15 @@ public class TokenController {
 	private UserService userService;
 	
 	@PostMapping("/token")
-	public ResponseEntity<?> generateToken(@RequestParam String mail, @RequestParam String password) throws ResponseStatusException {
+	public ResponseEntity<?> generateToken(@RequestParam String mail, @RequestParam String password) {
 		String token = userService.login(mail, password);
 		
 		if(StringUtils.isEmpty(token)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le couple email/mot de passe est invalide.");
 		}
 		
-		HashMap<String, String> json = new HashMap<>();
-		json.put("token", token);
-		return ResponseEntity.ok(json);
+		Optional<User> user = userService.findByMail(mail);
+		return ResponseEntity.ok(user.get());
 	}
 	
 }

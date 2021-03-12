@@ -85,4 +85,8 @@ public class UserService implements Authenticable {
 		return Optional.empty();
 	}
 	
+	
+	public Optional<User> findByMail(String mail) {
+		return userRepository.findByMail(mail);
+	}
 }
