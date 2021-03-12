@@ -1,20 +1,28 @@
-<p>login works!</p>
-
 <div class="row justify-content-center">
     <div class="col-md-6">
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-2">{{ error }}</div>
         <div class="card">
             <h2 class="card-header">Authentification</h2>
             <div class="card-body">
-                <form action="#">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label for="mail">Adresse email</label>
-                        <input type="email" name="mail" id="mail" class="form-control">
+                        <input type="email" name="mail" id="mail" class="form-control" formControlName="mail" [ngClass]="{ 'is-invalid': submitted && f.mail.errors }">
+                        <div *ngIf="submitted && f.mail.errors" class="invalid-feedback">
+                            <div *ngIf="f.mail.errors.required">Ce champ est obligatoire</div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input type="password" name="password" id="password" class="form-control">
+                        <input type="password" name="password" id="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                            <div *ngIf="f.password.errors.required">Ce champ est obligatoire</div>
+                        </div>
                     </div>
-                    <button class="btn btn-primary w-100">Se connecter</button>
+                    <button class="btn btn-primary w-100" [disabled]="loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Se connecter
+                    </button>
                 </form>
             </div>
         </div>
