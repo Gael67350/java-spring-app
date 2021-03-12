@@ -14,6 +14,14 @@ public interface Authenticable {
 	public String login(String username, String password);
 	
 	/**
+	 * Invalidate the API token passed in parameter.
+	 * 
+	 * @param token	A valid API token
+	 * @return		true if the token was valid and invalidated successfully, false otherwise
+	 */
+	public boolean logout(String token);
+	
+	/**
 	 * Returns the user who owns the specified token.
 	 * 
 	 * @param token	API token

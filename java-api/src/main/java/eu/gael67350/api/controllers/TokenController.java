@@ -2,10 +2,14 @@ package eu.gael67350.api.controllers;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,18 @@ public class TokenController {
 		
 		Optional<User> user = userService.findByMail(mail);
 		return ResponseEntity.ok(user.get());
+	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<?> invalidateToken(HttpServletRequest request) {
+		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+		token = StringUtils.removeStart(token, "Bearer").trim();
+		
+		if(!userService.logout(token)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le token n'est pas valide ou a deja expire.");
+		}
+		
+		return ResponseEntity.ok("");
 	}
 	
 }

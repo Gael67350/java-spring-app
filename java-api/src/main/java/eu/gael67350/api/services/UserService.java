@@ -71,6 +71,20 @@ public class UserService implements Authenticable {
 		
 		return StringUtils.EMPTY;
 	}
+	
+	@Override
+	public boolean logout(String token) {
+		Optional<User> user = userRepository.findByToken(token);
+		
+		if(user.isPresent()) {
+			User u = user.get();
+			u.setToken(null);
+			userRepository.save(u);
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Override
 	public Optional<org.springframework.security.core.userdetails.User> findByToken(String token) {

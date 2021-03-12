@@ -28,7 +28,8 @@ import eu.gael67350.api.services.UserService;
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
-			new AntPathRequestMatcher("/api/**")
+			new AntPathRequestMatcher("/api/**"),
+			new AntPathRequestMatcher("/auth/logout")
 			);
 	
 	private AuthenticationProvider authProvider;
@@ -45,7 +46,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	 @Override
 	 public void configure(WebSecurity web) {
-		 web.ignoring().antMatchers("/auth/**");
+		 web.ignoring().antMatchers("/auth/token");
 	 }
 	
 	public void configure(HttpSecurity http) throws Exception {
