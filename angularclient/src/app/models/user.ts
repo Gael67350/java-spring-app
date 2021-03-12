@@ -3,12 +3,13 @@ export class User {
     firstName: string;
     lastName: string;
     mail: string;
-    password?: string;
+    token: string;
     authdata?: string;
 
     constructor() {
         this.firstName = '';
         this.lastName = '';
         this.mail = '';
+        this.token = '';
     }
 }

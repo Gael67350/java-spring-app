@@ -23,7 +23,11 @@ export class AuthenticationService {
   }
 
   login(mail: string, password: string) {
-        return this.http.post<any>(`http://localhost:4200/api/users/login`, { mail, password })
+        let formData = new FormData();
+        formData.append('mail', mail);
+        formData.append('password', password);
+
+        return this.http.post<any>(`http://localhost:8090/auth/token`, formData)
             .pipe(map(user => {
                 user.authdata = window.btoa(mail + ':' + password);
                 localStorage.setItem('user', JSON.stringify(user));
