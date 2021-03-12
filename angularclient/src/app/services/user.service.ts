@@ -19,4 +19,8 @@ export class UserService {
   public find(id: number) {
     return this.http.get<User>(this.usersUrl + `/${id}`);
   }
+
+  public search(query: string) {
+    return this.http.get<User[]>(this.usersUrl + `?q=${query}`);
+  }
 }

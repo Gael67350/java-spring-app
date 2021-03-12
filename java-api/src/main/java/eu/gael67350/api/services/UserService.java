@@ -30,6 +30,10 @@ public class UserService implements Authenticable {
 		return userRepository.findAll();
 	}
 	
+	public Iterable<User> search(String query) {
+		return userRepository.search(query);
+	}
+	
 	public void destroy(int id) {
 		userRepository.deleteById(id);
 	}

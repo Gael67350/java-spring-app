@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
-import { boxArrowInRight } from 'ngx-bootstrap-icons';
+import { boxArrowInRight, pencilFill, trashFill, search } from 'ngx-bootstrap-icons';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +14,10 @@ import { BasicAuthInterceptor } from './helpers/basic-auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 
 const icons = {
-  boxArrowInRight
+  boxArrowInRight,
+  pencilFill,
+  trashFill,
+  search,
 };
 
 @NgModule({
@@ -27,6 +30,7 @@ const icons = {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     NgxBootstrapIconsModule.pick(icons),
   ],

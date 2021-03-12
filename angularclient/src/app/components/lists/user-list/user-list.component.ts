@@ -10,15 +10,25 @@ import { UserService } from '../../../services/user.service';
 export class UserListComponent implements OnInit {
 
   users: User[];
+  searchQuery: string;
 
   constructor(private userService: UserService) {
     this.users = [];
+    this.searchQuery = "";
   }
 
   ngOnInit(): void {
     this.userService.findAll().subscribe((data: User[]) => {
       this.users = data;
     });
+  }
+
+  onSearchStarted() {
+    this.userService.search(this.searchQuery).subscribe((data: User[]) => {
+      this.users = data;
+    });
+
+    this.searchQuery = "";
   }
 
 }

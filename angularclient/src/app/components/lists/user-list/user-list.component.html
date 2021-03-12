@@ -6,13 +6,27 @@
 
 <div class="row">
     <div class="col-md-12">
+        <div class="input-group input-group-sm w-25 float-right page-search">
+            <input [(ngModel)]="searchQuery" (keyup.enter)="onSearchStarted()" name="searchQuery" id="searchQuery" type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher" aria-describedby="search-user-btn">
+            <div class="input-group-append">
+                <button (click)="onSearchStarted()" class="btn btn-outline-primary" type="button" id="search-user-btn" aria-description="Rechercher un utilisateur">
+                    <i-bs name="search"></i-bs>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
         <table class="table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Mail</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Adresse email</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +35,14 @@
                     <th scope="row">{{ user.firstName }}</th>
                     <th scope="row">{{ user.lastName }}</th>
                     <th scope="row"><a href="mailto:{{ user.mail }}">{{ user.mail }}</a></th>
+                    <th scope="row">
+                        <a href="#" class="list-actions btn btn-outline-primary">
+                            <i-bs name="pencil-fill"></i-bs>
+                        </a>
+                        <a href="#" class="list-actions btn btn-outline-danger">
+                            <i-bs name="trash-fill"></i-bs>
+                        </a>
+                    </th>
                 </tr>
             </tbody>
         </table>
