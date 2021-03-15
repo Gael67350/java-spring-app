@@ -27,22 +27,26 @@ export class AuthenticationService {
   }
 
   login(mail: string, password: string) {
-        let formData = new FormData();
-        formData.append('mail', mail);
-        formData.append('password', password);
+    let formData = new FormData();
+    formData.append('mail', mail);
+    formData.append('password', password);
 
-        return this.http.post<any>(`http://localhost:8090/auth/token`, formData)
-            .pipe(map(user => {
-                user.authdata = window.btoa(mail + ':' + password);
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
-                return user;
-            }));
-    }
+    return this.http.post<any>(`http://localhost:4200/auth/token`, formData)
+      .pipe(map(user => {
+        user.authdata = window.btoa(mail + ':' + password);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }));
+  }
 
-    logout() {
-      localStorage.removeItem('user');
-      this.userSubject.next(null);
-      this.router.navigate(['/login']);
-    }
+  logout() {
+    console.log("logout");
+    return this.http.post<any>(`http://localhost:4200/auth/logout`, null)
+      .subscribe(() => {
+        localStorage.removeItem('user');
+        this.userSubject.next(null);
+        this.router.navigate(['/login']);
+      });
+  }
 }

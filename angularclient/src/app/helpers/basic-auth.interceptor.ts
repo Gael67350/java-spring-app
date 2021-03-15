@@ -12,14 +12,14 @@ import { AuthenticationService } from '../services/authentication.service';
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private authenticationService: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const user = this.authenticationService.currentUserValue;
     const isLogged = user && user.token;
-    const isApiUrl = request.url.startsWith("http://localhost:4200/api");
+    const isApiUrl = request.url.startsWith("http://localhost:4200/api") || request.url == "http://localhost:4200/auth/logout";
 
-    if(isLogged && isApiUrl) {
+    if (isLogged && isApiUrl) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${user.token}`,
