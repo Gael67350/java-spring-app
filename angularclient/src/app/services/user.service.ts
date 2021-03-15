@@ -24,6 +24,11 @@ export class UserService {
     return this.http.get<User[]>(this.usersUrl + `?q=${query}`);
   }
 
+  public create(user: User) {
+    let headers = {'Content-Type': 'application/json'};
+    return this.http.post<User>(this.usersUrl, JSON.stringify(user), {headers: headers});
+  }
+
   public update(user: User, id: number) {
     let headers = {'Content-Type': 'application/json'};
     return this.http.put<User>(this.usersUrl + `/${id}`, JSON.stringify(user), {headers: headers});

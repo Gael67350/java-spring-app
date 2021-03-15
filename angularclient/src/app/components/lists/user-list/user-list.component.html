@@ -14,12 +14,15 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="input-group input-group-sm w-25 float-right page-search">
-            <input [(ngModel)]="searchQuery" (keyup.enter)="onSearchStarted()" name="searchQuery" id="searchQuery" type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher" aria-describedby="search-user-btn">
-            <div class="input-group-append">
-                <button (click)="onSearchStarted()" class="btn btn-outline-primary" type="button" id="search-user-btn" aria-description="Rechercher un utilisateur">
-                    <i-bs name="search"></i-bs>
-                </button>
+        <div class="table-actions">
+            <a [routerLink]="'/users/create'" class="btn btn-rounded btn-sm btn-outline-primary">Ajouter un utilisateur</a>
+            <div class="input-group input-group-sm w-25 float-right page-search">
+                <input [(ngModel)]="searchQuery" (keyup.enter)="onSearchStarted()" name="searchQuery" id="searchQuery" type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher" aria-describedby="search-user-btn">
+                <div class="input-group-append">
+                    <button (click)="onSearchStarted()" class="btn btn-outline-primary" type="button" id="search-user-btn" aria-description="Rechercher un utilisateur">
+                        <i-bs name="search"></i-bs>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h2 class="page-title">Modifier un utilisateur</h2>
+        <h2 class="page-title">Créer un utilisateur</h2>
     </div>
 </div>
 
@@ -44,13 +44,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="password">Mot de passe</label>
-                        <input type="password" name="password" id="password" formControlName="password" class="form-control">
+                        <label for="password">Mot de passe*</label>
+                        <input type="password" name="password" id="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password?.errors }">
+                        <div *ngIf="submitted && f.password?.errors" class="invalid-feedback">
+                            <div *ngIf="f.password.errors.required">Ce champ est obligatoire</div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="passwordConfirmation">Confirmation du mot de passe</label>
+                        <label for="passwordConfirmation">Confirmation du mot de passe*</label>
                         <input type="password" name="passwordConfirmation" id="passwordConfirmation" formControlName="passwordConfirmation" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirmation?.errors }">
                         <div *ngIf="submitted && f.passwordConfirmation?.errors" class="invalid-feedback">
                             <div *ngIf="f.passwordConfirmation.errors.notSame">La confirmation doit être identique au mot de passe</div>
@@ -63,7 +66,7 @@
                 <div class="col-md-3">
                     <button class="btn btn-primary submit-btn w-100" [disabled]="loading">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Enregistrer les modifications
+                        Enregistrer
                     </button>
                 </div>
 

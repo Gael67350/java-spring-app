@@ -13,6 +13,7 @@ import { LoginComponent } from './components/login/login.component';
 import { BasicAuthInterceptor } from './helpers/basic-auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { EditUserComponent } from './components/forms/edit-user/edit-user.component';
+import { CreateUserComponent } from './components/forms/create-user/create-user.component';
 
 const icons = {
   boxArrowInRight,
@@ -27,6 +28,7 @@ const icons = {
     UserListComponent,
     LoginComponent,
     EditUserComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule,
