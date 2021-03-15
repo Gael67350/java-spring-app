@@ -24,6 +24,11 @@ export class UserService {
     return this.http.get<User[]>(this.usersUrl + `?q=${query}`);
   }
 
+  public update(user: User, id: number) {
+    let headers = {'Content-Type': 'application/json'};
+    return this.http.put<User>(this.usersUrl + `/${id}`, JSON.stringify(user), {headers: headers});
+  }
+
   public delete(id: number) {
     return this.http.delete<any>(this.usersUrl + `/${id}`);
   }

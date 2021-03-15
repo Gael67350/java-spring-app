@@ -12,6 +12,7 @@ import { UserService } from './services/user.service';
 import { LoginComponent } from './components/login/login.component';
 import { BasicAuthInterceptor } from './helpers/basic-auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
+import { EditUserComponent } from './components/forms/edit-user/edit-user.component';
 
 const icons = {
   boxArrowInRight,
@@ -25,6 +26,7 @@ const icons = {
     AppComponent,
     UserListComponent,
     LoginComponent,
+    EditUserComponent,
   ],
   imports: [
     BrowserModule,

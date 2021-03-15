@@ -63,17 +63,22 @@ public class UserService implements Authenticable {
 		return userRepository.save(user);
 	}
 	
-	public User update(User user, int id) {
+	public User update(User user, int id) {		
 		return userRepository.findById(id)
 		.map(e -> {
 			e.setFirstName(user.getFirstName());
 			e.setLastName(user.getLastName());
 			e.setMail(user.getMail());
-			e.setPassword(pwdEncoder.encode(user.getPassword()));
+			
+			if(!pwdEncoder.matches(user.getPassword(), e.getPassword())) {
+				e.setPassword(pwdEncoder.encode(user.getPassword()));
+			}
+			
 			return userRepository.save(e);
 		})
 		.orElseGet(() -> {
 			user.setId(id);
+			user.setPassword(pwdEncoder.encode(user.getPassword()));
 			return userRepository.save(user);
 		});
 	}

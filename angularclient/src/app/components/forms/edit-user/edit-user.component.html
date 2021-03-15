@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-title">Modifier un utilisateur</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="firstName">Prénom*</label>
+                        <input type="text" name="firstName" id="firstName" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName?.errors }">
+                        <div *ngIf="submitted && f.firstName?.errors" class="invalid-feedback">
+                            <div *ngIf="f.firstName.errors.required">Ce champ est obligatoire</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="lastName">Nom*</label>
+                        <input type="text" name="lastName" id="lastName" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName?.errors }">
+                        <div *ngIf="submitted && f.lastName?.errors" class="invalid-feedback">
+                            <div *ngIf="f.lastName.errors.required">Ce champ est obligatoire</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="mail">Adresse email*</label>
+                        <input type="email" name="mail" id="mail" formControlName="mail" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mail?.errors }">
+                        <div *ngIf="submitted && f.mail?.errors" class="invalid-feedback">
+                            <div *ngIf="f.mail.errors.required">Ce champ est obligatoire</div>
+                            <div *ngIf="f.mail.errors.email">Ce champ doit contenir une adresse email valide</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" name="password" id="password" formControlName="password" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="passwordConfirmation">Confirmation du mot de passe</label>
+                        <input type="password" name="passwordConfirmation" id="passwordConfirmation" formControlName="passwordConfirmation" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.passwordConfirmation?.errors }">
+                        <div *ngIf="submitted && f.passwordConfirmation?.errors" class="invalid-feedback">
+                            <div *ngIf="f.passwordConfirmation.errors.notSame">La confirmation doit être identique au mot de passe</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <button class="btn btn-primary submit-btn w-100">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+
+                <div class="col-md-3">
+                    <a [routerLink]="'/users'" class="btn btn-outline-secondary submit-btn w-100">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

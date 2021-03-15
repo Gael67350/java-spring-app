@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.gael67350.api.controllers.dtos.UserUpdateDto;
 import eu.gael67350.api.models.User;
 import eu.gael67350.api.services.UserService;
 
@@ -52,7 +55,31 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public User update(@RequestBody @Valid User updatedUser, @PathVariable int id) {
-		return userService.update(updatedUser, id);
+	public ResponseEntity<?> update(@RequestBody @Valid UserUpdateDto userDto, @PathVariable int id) {
+		Optional<User> user = userService.show(id);
+		
+		if(!user.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		User u = SerializationUtils.clone(user.get());
+		
+		if(userDto.getFirstName() != null) {
+			u.setFirstName(userDto.getFirstName());
+		}
+		
+		if(userDto.getLastName() != null) {
+			u.setLastName(userDto.getLastName());
+		}
+		
+		if(userDto.getMail() != null) {
+			u.setMail(userDto.getMail());
+		}
+		
+		if(userDto.getPassword() != null) {
+			u.setPassword(userDto.getPassword());
+		}
+		
+		return ResponseEntity.ok(userService.update(u, id));
 	}
 }
