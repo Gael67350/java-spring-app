@@ -1,6 +1,6 @@
 package eu.gael67350.api.controllers.dtos;
 
-public class UserUpdateDto {
+public class UserDto {
 
 	private int id;
 	private String firstName;
@@ -8,7 +8,7 @@ public class UserUpdateDto {
 	private String mail;
 	private String password;
 	
-	protected UserUpdateDto() {
+	protected UserDto() {
 		
 	}
 

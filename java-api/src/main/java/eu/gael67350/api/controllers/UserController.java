@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.gael67350.api.controllers.dtos.UserUpdateDto;
+import eu.gael67350.api.controllers.dtos.UserDto;
+import eu.gael67350.api.errors.exceptions.UserNotFoundException;
 import eu.gael67350.api.models.User;
 import eu.gael67350.api.services.UserService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -31,35 +38,44 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/{id}")
-	public Optional<User> show(@PathVariable int id) {
-		return userService.show(id);
+	@ApiResponse(description = "Données de l'utilisateur correspondant à l'ID fourni", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+	public ResponseEntity<Optional<User>> show(@Parameter(description = "Identifiant unique d'un utilisateur", required = true) @PathVariable int id) {
+		return ResponseEntity.ok(userService.show(id));
 	}
 	
 	@GetMapping
-	public Iterable<User> showAll(@RequestParam(value="q", required=false) String query) {
+	@ApiResponse(description = "Ensemble des utilisateurs correspondant au terme de recherche (si présent)", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
+	public ResponseEntity<Iterable<User>> showAll(@Parameter(description = "Le terme utilisé pour la recherche", required = false) @RequestParam(value="q", required=false) String query) {
 		if(query != null) {
-			return userService.search(query);
+			return ResponseEntity.ok(userService.search(query));
 		}
 		
-		return userService.showAll();
+		return ResponseEntity.ok(userService.showAll());
 	}
 	
 	@DeleteMapping("/{id}")
-	public void destroy(@PathVariable int id) {
+	@ApiResponse(description = "Pas de contenu")
+	public ResponseEntity<?> destroy(@Parameter(description = "Identifiant unique d'un utilisateur", required = true) @PathVariable int id) {
 		userService.destroy(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	@PostMapping
-	public User store(@RequestBody @Valid User user) {		
-		return userService.store(user);
+	@ApiResponse(description = "Données de l'utilisateur créé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+	public ResponseEntity<User> store(@Parameter(description = "Objet JSON contenant les données de l'utilisateur à créer", required = true) @RequestBody @Valid User user) {		
+		return ResponseEntity.ok(userService.store(user));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody @Valid UserUpdateDto userDto, @PathVariable int id) {
+	@ApiResponse(description = "Données de l'utilisateur modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+	public ResponseEntity<User> update(
+			@Parameter(description = "Objet JSON contenant les données modifiées de l'utilisateur", required = true) @RequestBody @Valid UserDto userDto, 
+			@Parameter(description = "Identifiant unique d'un utilisateur") @PathVariable int id
+			) {
 		Optional<User> user = userService.show(id);
 		
 		if(!user.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new UserNotFoundException();
 		}
 		
 		User u = SerializationUtils.clone(user.get());
