@@ -32,11 +32,12 @@ export class AuthenticationService {
     formData.append('password', password);
 
     return this.http.post<any>(`http://localhost:4200/auth/token`, formData)
-      .pipe(map(user => {
-        user.authdata = window.btoa(mail + ':' + password);
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userSubject.next(user);
-        return user;
+      .pipe(map(data => {
+        data.authdata = window.btoa(mail + ':' + password);
+        data.user.token = data.token;
+        localStorage.setItem('user', JSON.stringify(data.user));
+        this.userSubject.next(data.user);
+        return data.user;
       }));
   }
 

@@ -1,5 +1,7 @@
 package eu.gael67350.api.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,12 +33,16 @@ public class UserService implements Authenticable {
 		return userRepository.findById(id);
 	}
 	
-	public Iterable<User> showAll() {
-		return userRepository.findAll();
+	public List<User> showAll() {
+		List<User> users = new ArrayList<>();
+		userRepository.findAll().forEach(users::add);
+		return users;
 	}
 	
-	public Iterable<User> search(String query) {
-		return userRepository.search(query);
+	public List<User> search(String query) {
+		List<User> users = new ArrayList<>();
+		userRepository.search(query).forEach(users::add);
+		return users;
 	}
 	
 	public void destroy(int id) {

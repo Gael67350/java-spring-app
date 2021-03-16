@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.gael67350.api.controllers.dtos.AuthenticationDto;
+import eu.gael67350.api.controllers.dtos.DtoMapper;
 import eu.gael67350.api.models.User;
 import eu.gael67350.api.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "Authentification")
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path="/auth")
 public class TokenController {
@@ -31,9 +38,12 @@ public class TokenController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private DtoMapper dtoMapper;
+	
 	@PostMapping("/token")
-	@ApiResponse(description = "Données de l'utilisateur connecté avec token d'identification API valide", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
-	public ResponseEntity<?> generateToken(
+	@ApiResponse(description = "Données de l'utilisateur connecté avec token d'identification API valide", responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = AuthenticationDto.class))))
+	public ResponseEntity<AuthenticationDto> generateToken(
 			@Parameter(description = "Adresse email", required = true) @RequestParam String mail, 
 			@Parameter(description = "Mot de passe", required = true) @RequestParam String password
 			) {
@@ -44,11 +54,17 @@ public class TokenController {
 		}
 		
 		Optional<User> user = userService.findByMail(mail);
-		return ResponseEntity.ok(user.get());
+		
+		AuthenticationDto authDto = new AuthenticationDto();
+		authDto.setUser(dtoMapper.convertToDto(user.get()));
+		authDto.setToken(token);
+		
+		return ResponseEntity.ok(authDto);
 	}
 	
 	@PostMapping("/logout")
-	@ApiResponse(description = "Pas de contenu")
+	@ApiResponse(description = "Pas de contenu", responseCode = "204")
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<?> invalidateToken(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		token = StringUtils.removeStart(token, "Bearer").trim();

@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -21,10 +19,17 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import eu.gael67350.api.auth.AuthenticationFilter;
 import eu.gael67350.api.auth.AuthenticationProvider;
-import eu.gael67350.api.services.UserService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(
+		name = "bearerAuth",
+		type = SecuritySchemeType.HTTP,
+		bearerFormat = "UUID",
+		scheme = "bearer"
+		)
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
